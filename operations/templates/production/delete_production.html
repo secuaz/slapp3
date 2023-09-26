@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+
+{% block title %} Eliminar Produccion {% endblock title %}
+
+
+{% block content %}
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <fieldset class="form-group">
+        <div style="color:#e9900a; font-style: bold; font-size: 3rem; border-bottom: 1px solid white;">Eliminar Orden de
+            Produccion</div> <br>
+        <h2>Estas seguro de querer eliminar la orden de produccion nro: {{ object.orderno }}?</h2>
+    </fieldset>
+
+    <div class="form-group">
+        <button type="submit" class="btn ghost-red">Eliminar</button>
+        <a href="{% url 'production-list' %}" class="btn ghost-button">Borrar</a>
+    </div>
+
+</form>
+
+{% endblock content %}

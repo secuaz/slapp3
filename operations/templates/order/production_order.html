@@ -1,0 +1,99 @@
+{% extends order_base %}
+{% load static %}
+
+
+{% block title %} Orden de Produccion Nro : {{ order.orderno }}{% endblock title %}
+
+
+{% block content %}
+
+<div style="color:#e9900a; font-style: bold; font-size: 3rem;  border-bottom: 1px solid white;">Orden de Produccion Nro
+    : {{ order.orderno }}</div>
+
+<br><br>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="bg">
+
+        <br><br>
+
+        <div id="printArea" class="bg">
+
+            <table class="outer-box inner-box" style="width: 800px; margin-left: auto; margin-right: auto;">
+                <tbody>
+                    <tr style="height: 1px;">
+                        <td>
+                            <p style="text-align: center;">Orden de Produccion</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="outer-box" style="width: 800px; margin-left: auto; margin-right: auto;">
+                                <tbody>
+                                    <tr>
+                                        <td class="inner-box" style="width: 50%; font-weight: bold;">&nbsp;EQUIPO DE PRODUCCION</td>
+                                        <td class="inner-box" style="width: 25%; font-weight: bold;">&nbsp;ORDEN NRO</td>
+                                        <td class="inner-box" style="width: 25%;">&nbsp;{{ order.orderno }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="inner-box" style="width: 50%;">&nbsp;{{ order.machine.name }}</td>
+                                        <td class="inner-box" style="width: 25%; font-weight: bold;">&nbsp;FECHA</td>
+                                        <td class="inner-box" style="width: 25%;">&nbsp;{{ order.time.date }}</td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="outer-box" style="width: auto; margin-left: auto; margin-right: auto;">
+                                <tbody>
+                                    <tr>
+                                        <td class="inner-box"
+                                            style="width: 05%; font-weight: bold; text-align: center;">&nbsp;Orden Nro</td>
+                                        <td class="inner-box"
+                                            style="width: 30%; font-weight: bold; text-align: center;">Producto</td>
+                                        <td class="inner-box"
+                                            style="width: 12%; font-weight: bold; text-align: center;">Cantidad</td>
+                                    </tr>
+                                    {% for item in items %}
+                                    <tr style="height: auto;">
+                                        <td class="inner-box" style="width: 5%;">&nbsp; {{ forloop.counter }}</td>
+                                        <td class="inner-box" style="width: 30%;">&nbsp; {{ item.stock.name }}</td>
+                                        <td class="inner-box" style="width: 12%;">&nbsp; {{ item.quantity }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br><br>
+    </div>
+
+    <br><br>
+
+    <div class="wrapper">
+        <button class="center ghost-blue" onclick="printpage('printArea')">Imprimir</button>
+        <button class="center ghost-green" type="submit">Guardar PDF</button>
+        <a href="{% url 'production-list' %}" class=" btn center ghost-button">Volver</a>
+    </div>
+
+</form>
+
+<script>
+    function printpage(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    }       
+</script>
+
+{% endblock %}

@@ -1,0 +1,168 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/bootstrap.min.css' %}">
+
+    <!-- Main CSS, then Sidebar CSS and Dialog Box CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/sidebar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dialogbox.css' %}">
+<!-- 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+
+
+    <title>SL App - {% block title %}Falta Titulo{% endblock title %}</title>
+
+</head>
+
+<body>
+
+    <!-- Dialog Box CSS  -->
+    <div id="dialogoverlay"></div>
+    <div id="dialogbox">
+        <div class="align-middle">
+            <div id="dialogboxhead"></div>
+            <div id="dialogboxbody"></div>
+            <div id="dialogboxfoot"></div>
+        </div>
+    </div>
+
+    <main id="wrapper">
+
+        {% if user.is_authenticated %}
+
+        <nav id="sidebar">
+
+            <div class="sidebar-header">
+                <a class="navbar-brand titlefont mr-4" href="{% url 'home' %}">
+                    <h3>SL App</h3>
+                </a>
+            </div>
+
+            <ul class="list-unstyled sidebar-components">
+                {# <p class="sidebar-paragraph">Dummy Heading</p> #}
+                <li>
+                    <a class="sidebar-text sidebar-button" href="{% url 'home' %}">Dashboard</a>
+                </li>
+                <li>
+                    <a href="#inventorySubmenu" data-toggle="collapse"
+                        class="dropdown-toggle sidebar-text right-arrow sidebar-button">Inventario</a>
+                    <ul class="collapse list-unstyled" id="inventorySubmenu">
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button" href="{% url 'inventory' %}">Listado
+                                de Stock</a> </li>
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button" href="{% url 'new-stock' %}">Crear
+                                Producto</a> </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#productionSubmenu" data-toggle="collapse"
+                        class="dropdown-toggle sidebar-text right-arrow sidebar-button">Produccion</a>
+                    <ul class="collapse list-unstyled" id="productionSubmenu">
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button"
+                                href="{% url 'production-list' %}">Listado de Produccion</a> </li>
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button"
+                                href="{% url 'select-machine' %}">Registrar Produccion</a> </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#dispatchSubmenu" data-toggle="collapse"
+                        class="dropdown-toggle sidebar-text right-arrow sidebar-button">Despacho</a>
+                    <ul class="collapse list-unstyled" id="dispatchSubmenu">
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button"
+                                href="{% url 'dispatch-list' %}">Listado de Despachos</a> </li>
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button"
+                                href="{% url 'new-dispatch' %}">Registrar nuevo Despacho</a> </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#machineSubmenu" data-toggle="collapse"
+                        class="dropdown-toggle sidebar-text right-arrow sidebar-button">Prensas</a>
+                    <ul class="collapse list-unstyled" id="machineSubmenu">
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button"
+                                href="{% url 'machine-list' %}">Listado de Prensas</a> </li>
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button"
+                                href="{% url 'new-machine' %}">Añadir Prensa</a> </li>
+                    </ul>
+                </li>
+
+                <li class="bottomleft">
+                    <a href="#UserSubmenu" data-toggle="collapse"
+                        class="dropdown-toggle sidebar-text right-arrow sidebar-button">{{ request.user.username }}</a>
+                    <ul class="collapse list-unstyled" id="UserSubmenu">
+                        {% if request.user.is_superuser %}
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button"
+                                href="{% url 'admin:index' %}">Administracion</a> </li>
+                        {% endif %}
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+            {% comment %}
+            <ul class="list-unstyled CTAs">
+                <li>
+                    <a href="#" class="sidebar-button nav-button">Boton</a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-text">Link</a>
+                </li>
+            </ul>
+            {% endcomment %}
+
+        </nav>
+
+        <div id="content">
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}"> {{ message }} </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    {% endif %}
+
+                    <div class="container">
+                        {% block content %}{% endblock content %}
+                    </div>
+
+                </div>
+            </div>
+            <br>
+
+        </div>
+
+    </main>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{% static 'bootstrap/jquery-3.3.1.slim.min.js' %}"></script>
+    <script src="{% static 'bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script> -->
+
+</body>
+
+</html>

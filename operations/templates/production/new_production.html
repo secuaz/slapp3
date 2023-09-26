@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %} Nueva Produccion {% endblock title %}
+
+
+{% block content %}
+
+<div style="color:#e9900a; font-style: bold; font-size: 3rem; border-bottom: 1px solid white;">Nueva Produccion</div>
+
+<br>
+
+<div class="panel panel-default">
+    <div class="panel-heading panel-heading-text">Detalle de Equipo</div>
+    <div class="panel-body">
+
+        <div class="form-group">
+            <label for="id_name" class="panel-body-text">Equipo:</label>
+            <input type="text" class="form-control textinput" id="id_name" value="{{ machine.name }}" disabled>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<form method="POST" class="panel panel-default">
+
+    {% csrf_token %}
+    {{ formset.management_form }}
+
+    <div class="panel-heading panel-heading-text">Detalle de Produccion</div>
+
+    <div id="stockitem">
+        <div class="panel-body">
+            {% for form in formset %}
+            <div class="row form-row clone-row">
+                <div class="form-group col-md-6">
+                    {{ form.stock.errors }}
+                    <label class="panel-body-text">Producto:</label>
+                    {{ form.stock }}
+                </div>
+                <div class="form-group col-md-2">
+                    {{ form.quantity.errors }}
+                    <label class="panel-body-text">Cantidad:</label>
+                    {{ form.quantity }}
+                </div>
+                <div class="form-group col-md-1">
+                    <label class="panel-body-text" style="color: #000">.</label>
+                    <button class="form-control btn btn-danger remove-form-row">-</button>
+                </div>
+            </div>
+            {% endfor %}
+            <div style="text-align: right;">
+                <a href="#" class="add-form-row">+ Añadir</a>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="align-middle">
+        <button type="submit" class="btn ghost-green">Agregar a produccion</button>
+        <a href="{% url 'select-machine' %}" class="btn ghost-button">Volver</a>
+        <a href="{% url 'production-list' %}" class="btn ghost-button">Cancelar</a>
+    </div>
+</form>
+
+<!-- Custom JS to add and remove item forms -->
+<script type="text/javascript" src="{% static 'js/jquery-3.2.1.slim.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/dialogbox.js' %}"></script>
+<script type="text/javascript">
+
+    //Crea el objeto para las alertas
+    var custom_alert = new custom_alert();
+
+    function updateElementIndex(el, prefix, ndx) {
+        var id_regex = new RegExp('(' + prefix + '-\\d+)');
+        var replacement = prefix + '-' + ndx;
+        if ($(el).attr("for")) $(el).attr("for", $(el).attr("for").replace(id_regex, replacement));
+        if (el.id) el.id = el.id.replace(id_regex, replacement);
+        if (el.name) el.name = el.name.replace(id_regex, replacement);
+    };
+
+    function cloneMore(selector, prefix) {
+        var newElement = $(selector).clone(true);
+        var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+        newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function () {
+            var name = $(this).attr('name')
+            if (name) {
+                name = name.replace('-' + (total - 1) + '-', '-' + total + '-');
+                var id = 'id_' + name;
+                $(this).attr({ 'name': name, 'id': id }).val('').removeAttr('checked');
+            }
+        });
+        newElement.find('label').each(function () {
+            var forValue = $(this).attr('for');
+            if (forValue) {
+                forValue = forValue.replace('-' + (total - 1) + '-', '-' + total + '-');
+                $(this).attr({ 'for': forValue });
+            }
+        });
+        total++;
+        $('#id_' + prefix + '-TOTAL_FORMS').val(total);
+        $(selector).after(newElement);
+        return false;
+    }
+
+    function deleteForm(prefix, btn) {
+        var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
+        if (total > 1) {
+            btn.closest('.clone-row').remove();
+            var forms = $('.clone-row');
+            $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
+            for (var i = 0, formCount = forms.length; i < formCount; i++) {
+                $(forms.get(i)).find(':input').each(function () {
+                    updateElementIndex(this, prefix, i);
+                });
+            }
+            total--;
+        } else {
+            custom_alert.render('El campo no puede ser borrado');
+        }
+        return false;
+    };
+
+    $(document).on('click', '.add-form-row', function (e) {
+        e.preventDefault();
+        cloneMore('.clone-row:last', 'form');
+        return false;
+    });
+
+    $(document).on('click', '.remove-form-row', function (e) {
+        e.preventDefault();
+        deleteForm('form', $(this));
+        return false;
+    });
+
+</script>
+
+{% endblock content %}

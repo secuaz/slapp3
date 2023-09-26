@@ -1,0 +1,143 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/bootstrap.min.css' %}">
+
+    <!-- Main CSS, then Sidebar CSS, Bill CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/sidebar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bill.css' %}">
+
+    <title>SL App - {% block title %}Title Missing{% endblock title %}</title>
+
+</head>
+
+<body class="bg">
+
+    <main id="wrapper">
+
+        <nav id="sidebar">
+
+            <div class="sidebar-header">
+                <a class="navbar-brand titlefont mr-4" href="{% url 'home' %}">
+                    <h3>SL Agro</h3>
+                </a>
+            </div>
+
+            <ul class="list-unstyled sidebar-components">
+                {# <p class="sidebar-paragraph">Dummy Heading</p> #}
+                <li>
+                    <a class="sidebar-text sidebar-button" href="{% url 'home' %}">Home</a>
+                </li>
+                <li>
+                    <a href="#inventorySubmenu" data-toggle="collapse"
+                        class="dropdown-toggle sidebar-text right-arrow sidebar-button">Inventario</a>
+                    <ul class="collapse list-unstyled" id="inventorySubmenu">
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button" href="{% url 'inventory' %}">Lista
+                                Inventario</a> </li>
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button" href="{% url 'new-stock' %}">Agregar
+                                Producto</a> </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#productionSubmenu" data-toggle="collapse"
+                        class="dropdown-toggle sidebar-text right-arrow sidebar-button">Produccion</a>
+                    <ul class="collapse list-unstyled" id="productionSubmenu">
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button"
+                                href="{% url 'production-list' %}">Listado de Produccion</a> </li>
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button"
+                                href="{% url 'select-machine' %}">Registar Produccion</a> </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#dispatchSubmenu" data-toggle="collapse"
+                        class="dropdown-toggle sidebar-text right-arrow sidebar-button">Despachos</a>
+                    <ul class="collapse list-unstyled" id="dispatchSubmenu">
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button"
+                                href="{% url 'dispatch-list' %}">Ordenes de Depachos</a> </li>
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button"
+                                href="{% url 'new-dispatch' %}">Registrar Despacho</a> </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#machineSubmenu" data-toggle="collapse"
+                        class="dropdown-toggle sidebar-text right-arrow sidebar-button">Equipos</a>
+                    <ul class="collapse list-unstyled" id="supplierSubmenu">
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button"
+                                href="{% url 'machine-list' %}">Listado de Equipos</a> </li>
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button"
+                                href="{% url 'new-machine' %}">Agregar Equipo</a> </li>
+                    </ul>
+                </li>
+
+                <li class="bottomleft">
+                    {% if user.is_authenticated %}
+                    <a href="#UserSubmenu" data-toggle="collapse"
+                        class="dropdown-toggle sidebar-text right-arrow sidebar-button">{{ request.user.username }}</a>
+                    <ul class="collapse list-unstyled" id="UserSubmenu">
+                        {% if request.user.is_superuser %}
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button" href="{% url 'admin:index' %}">Admin
+                                Page</a> </li>
+                        {% endif %}
+                        <li> <a class="sidebar-text sidebar-subitem sidebar-button" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    </ul>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="sidebar-text sidebar-button">No has iniciado sesion</a>
+                    {% endif %}
+                </li>
+
+            </ul>
+            {% comment %}
+            <ul class="list-unstyled CTAs">
+                <li>
+                    <a href="#" class="sidebar-button nav-button">Button</a>
+                </li>
+                <li>
+                    <a href="#" class="sidebar-text">Link</a>
+                </li>
+            </ul>
+            {% endcomment %}
+
+        </nav>
+
+        <div id="content" class="bg-black">
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}"> {{ message }} </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <div class="container">
+                        {% block content %}{% endblock content %}
+                    </div>
+
+                </div>
+            </div>
+            <br>
+
+        </div>
+
+    </main>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{% static 'bootstrap/jquery-3.3.1.slim.min.js' %}"></script>
+    <script src="{% static 'bootstrap/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap/bootstrap.min.js' %}"></script>
+
+</body>
+
+</html>

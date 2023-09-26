@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+
+{% block title %} Listado de Produccion {% endblock title %}
+
+
+{% block content %}
+
+<div class="row" style="color: #e9900a; font-style: bold; font-size: 3rem;">
+    <div class="col-md-8">Listado de Produccion</div>
+    <div class="col-md-4">
+        <div style="float:right;"> <a class="btn ghost-blue" href="{% url 'select-machine' %}">Registrar Produccion</a>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<table class="table table-css">
+
+    <thead class="thead-inverse align-middle">
+        <tr>
+            <th width="10%">Nro de Orden</th>
+            <th width="15%">Equipo</th>
+            <th width="15%">Producto</th>
+            <th width="10%">Cantidad</th>
+            <th width="10%">Fecha de Produccion</th>
+            <th width="25%">Opciones</th>
+        </tr>
+    </thead>
+
+    {% if orders %}
+
+    <tbody>
+        {% for production in orders %}
+        <tr>
+            <td class="align-middle">
+                <h3>{{ production.orderno }}</h3>
+            </td>
+            <td class="">
+                {% if production.machine.is_deleted %}
+                {{ production.machine }}<br>
+                {% else %}
+                <a href="{% url 'machine' production.machine.name %}">{{ production.machine }}</a> <br>
+                {% endif %}
+            </td>
+            <td class="align-middle">{% for item in production.get_items_list %} {{ item.stock.name }} <br> {% endfor %}
+            </td>
+            <td class="align-middle">{% for item in production.get_items_list %} {{ item.quantity }} <br> {% endfor %}
+            </td>
+            <td class="align-middle">{{ production.time.date }}</td>
+            <td class="align-middle">
+                <a href="{% url 'production-order' production.orderno %}" class="btn ghost-green">Ver orden</a>
+                <a href="{% url 'delete-production' production.pk %}" class="btn ghost-red">Eliminar orden</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+<div class="align-middle">
+    {% if is_paginated %}
+
+    {% if page_obj.has_previous %}
+    <a class="btn btn-outline-info mb-4" href="?page=1">Primero</a>
+    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+    {% if page_obj.number == num %}
+    <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a class="btn btn-outline-info mb-4"
+        href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Ultimo</a>
+        {% endif %}
+
+        {% endif %}
+</div>
+
+{% else %}
+
+<tbody></tbody>
+</table>
+
+<br><br><br><br><br><br><br><br>
+<div style="color: #e9900a; font-style: bold; font-size: 1.5rem; text-align: center;">LISTADO VACIO!</div>
+
+{% endif %}
+
+{% endblock content %}

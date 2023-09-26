@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+{{ machine.name }}'s profile
+{% endblock %}
+
+
+{% block content %}
+
+<div class="content-section">
+    <div class="media">
+        <div class="media-body">
+            <h2 style="color:#e9900a;" class="account-heading">&nbsp;{{ machine.name }}</h2>
+            <a href="{% url 'edit-machine' machine.pk %}" class="btn ghost-button" style="float: right;">Editar Detalles</a>
+            <div class="row">
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table table-css">
+
+    <br>
+
+    <thead class="thead-inverse align-middle">
+        <tr>
+            <th width="10%">Orden Nro</th>
+            <th width="15%">Producto</th>
+            <th width="15%">Cantidad Producida</th>
+            <th width="15%">Fecha de Produccion</th>
+            <th width="30%">Opciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for production in orders %}
+        <tr>
+            <td class="align-middle">
+                <h3>{{ production.orderno }}</h3>
+            </td>
+            <td class="align-middle">{% for item in production.get_items_list %} {{ item.stock.name }} <br> {% endfor %}
+            </td>
+            <td class="align-middle">{% for item in production.get_items_list %} {{ item.quantity }} <br> {% endfor %}
+            </td>
+            <td class="align-middle">{{ production.time.date }}</td>
+            <td class="align-middle">
+                <a href="{% url 'production-order' production.orderno %}" class="btn ghost-green">Ver Orden</a>
+                <a href="{% url 'delete-production' production.pk %}" class="btn ghost-red">Eliminar Orden</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="align-middle">
+    {% if orders.has_other_pages %}
+
+    {% if orders.has_previous %}
+    <a class="btn btn-outline-info mb-4" href="?page=1">Primero</a>
+    <a class="btn btn-outline-info mb-4" href="?page={{ orders.previous_page_number }}">Anterior</a>
+    {% endif %}
+
+    {% for num in orders.paginator.page_range %}
+    {% if orders.number == num %}
+    <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+    {% elif num > orders.number|add:'-3' and num < orders.number|add:'3' %} <a class="btn btn-outline-info mb-4"
+        href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+        {% endfor %}
+
+        {% if orders.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ orders.next_page_number }}">Proximo</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ orders.paginator.num_pages }}">Ultimo</a>
+        {% endif %}
+
+        {% endif %}
+</div>
+
+{% endblock content %}

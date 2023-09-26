@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+
+{% block title %} Eliminar Despacho {% endblock title %}
+
+
+{% block content %}
+
+<form method="post">
+
+    {% csrf_token %}
+
+    <fieldset class="form-group">
+        <div style="color:#e9900a; font-style: bold; font-size: 3rem; border-bottom: 1px solid white;">Eliminar Despacho
+        </div> <br>
+        <h2>Estas seguro de querer eliminar la orden de despacho nro: {{ object.orderno }}?</h2>
+    </fieldset>
+
+    <div class="form-group">
+        <button type="submit" class="btn ghost-red">Eliminar</button>
+        <a href="{% url 'dispatch-list' %}" class="btn ghost-button">Cancelar</a>
+    </div>
+
+</form>
+
+{% endblock content %}
