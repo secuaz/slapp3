@@ -27,7 +27,7 @@
         <button type="reset" class="btn ghost-blue">Borrar</button>
         {% endif %}
         {% if delbtn %}
-        <a href="{% url 'delete-machine' machine.pk %}" class="btn ghost-red"> Eliminar Equipo </a>
+        <a href="{% url 'delete-machine' object.pk %}" class="btn ghost-red"> Eliminar Equipo </a>
         {% endif %}
         <a href="{% url 'machine-list' %}" class="btn ghost-button">Cancelar</a>
     </div>

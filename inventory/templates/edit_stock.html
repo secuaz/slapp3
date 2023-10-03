@@ -13,7 +13,7 @@
 <form method="POST">
 
     {% csrf_token %}
-    {{ form.non_field_errors }}
+    {{ form.non_field_errors }} 
 
     <div class="form-group">
         {{ form.name.errors }}
@@ -30,7 +30,7 @@
 
     <div class="align-middle">
         <button type="submit" class="btn ghost-green">{{ savebtn }}</button>
-        {% if title == "New Stock" %}
+        {% if title == "Editar Equipo" %}
         <button type="reset" class="btn ghost-blue">Borrar</button>
         {% endif %}
         {% if delbtn %}

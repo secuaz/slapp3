@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'homepage',
-    # 'frontend',
+    'frontend',
     'inventory',
     'operations',
 

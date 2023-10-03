@@ -22,7 +22,7 @@
     <thead class="thead-inverse align-middle">
         <tr>
             <th width="10%">Orden Nro</th>
-            <th width="15%">Cliente</th>
+            <th width="15%">Equipo</th>
             <th width="15%">Productos</th>
             <th width="10%">Cantidad</th>
             <th width="15%">Fecha de Despacho</th>
@@ -37,7 +37,7 @@
         <tr>
             <td class="aldispatchle.orderno }}</h3>
             </td>
-            <td class=""> {{ dispatch.name }} <br> <small style=" color: #909494">Ph No : {{ dispatch.phone }}</small></td>
+            <td class=""> {{ dispatch.name }} <br> <small style=" color: #909494">Orden No : {{ dispatch.phone }}</small></td>
             <td class="align-middle">{% for item in dispatch.get_items_list %} {{ item.stock.name }} <br> {% endfor %}</td>
             <td class="align-middle">{% for item in dispatch.get_items_list %} {{ item.quantity }} <br> {% endfor %}</td>
             <td class="align-middle">{{ dispatch.get_total_price }}</td>

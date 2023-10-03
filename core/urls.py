@@ -10,6 +10,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
 
     path('', include('homepage.urls')),
+    path('frontend/', include('frontend.urls')),
     path('inventory/', include('inventory.urls')),
     path('operations/', include('operations.urls')),
 ]

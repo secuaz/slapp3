@@ -58,7 +58,7 @@
                     <div class="row">               
                         <div class="col-md-9"> 
                             Remito Nro: {{ item.orderno }} <br> 
-                            Cliente: {{ item.machine.name }} <br>
+                            Equipo: {{ item.machine.name }} <br>
                             <small>{{ item.time.date }}</small>
                         </div>
                         <div class="col-md-2"> {{ item.get_total_price }} <br> <br> <a href="{% url 'production-order' item.orderno %}">Ver remito</a> </div>

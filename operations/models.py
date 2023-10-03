@@ -83,7 +83,7 @@ class DispatchItem(models.Model):
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
-        return "Bill no: " + str(self.orderno.orderno) + ", Item = " + self.stock.name
+        return "Orden nro: " + str(self.orderno.orderno) + ", Item = " + self.stock.name
 
 
 class DispatchOrderDetails(models.Model):
@@ -104,4 +104,4 @@ class DispatchOrderDetails(models.Model):
     total = models.IntegerField(default=0)
 
     def __str__(self):
-        return "Bill no: " + str(self.orderno.orderno)
+        return "Orden nro: " + str(self.orderno.orderno)

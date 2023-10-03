@@ -5,7 +5,7 @@ from operations.models import DispatchOrder, ProductionOrder
 
 
 class HomeView(View):
-    template_name = "index.html"
+    template_name = "layout.html"
     def get(self, request):        
         labels = []
         data = []        
